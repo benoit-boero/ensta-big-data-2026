@@ -52,14 +52,22 @@ def ingest_data():
     # Jointure
     df_joined = df_rs.join(df_weather, on="date_parsed", how="left")
 
-    print("Number of RS rows:", df_rs.count())
+    print("Number of rs rows:", df_rs.count())
     df_rs.show()
-    print("Number of WEATHER rows:", df_weather.count())
+    print("Number of weather rows:", df_weather.count())
     df_weather.show()
-    print("Number of WEATHER rows:", df_joined.count())
+    print("Number of joined rows:", df_joined.count())
     df_joined.show()
 
     # Écriture des données au format parquet
-    df_joined.write.parquet("./data-parquet")
+    parquet_dir = "./data-parquet"
+    print("Ouputing the full aggregated dataset as parquet in", parquet_dir)
+    df_joined.write.mode("overwrite").parquet(parquet_dir)
+
+    # Écriture d'un plus petit dataset pour les tests
+    parquet_dir_test = parquet_dir + "-test"
+    print("Ouputing a short version (500000 lines) of \
+the dataset as parquet in", parquet_dir_test)
+    df_joined.limit(500000).write.mode("overwrite").parquet(parquet_dir_test)
 
 ingest_data()
