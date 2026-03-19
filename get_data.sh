@@ -20,10 +20,46 @@ get_rs_data_unit() {
 }
 
 get_rs_data() {
-	hashes=("866c6a8c7d6729673dcd9ef040f06baa")
+	# source: https://data.iledefrance.fr/explore/dataset/histo-validations-reseau-surface/export/?sort=annee
+	hashes=(
+		# 2016
+		"c14c733e65e57a0f7aa918903f41055b"
+		# 2017
+		"9c6b0ae07fb8476b58d76f9c5c5f149c"
+		# 2018
+		"4c9abf782ec17616bcbcd68faa45ec99"
+		# 2019
+		"6dd37a6a90a476a1090a751ea3e0d78c"
+		# 2020
+		"41adcbd4216382c232ced4ccbf60187e"
+		# 2021
+		"68cac32e8717f476905a60006a4dca26"
+		# 2022
+		"fa7ac9a106a1ce78d4158101a17404bd"
+		# 2023
+		"3c86c4b775bf17334108d4c0325478c2"
+		# 2024
+		"73c8353c8431e192a1c561e38487b963"
+	)
 	for h in "${hashes[@]}"; do
 		get_rs_data_unit $h && unzip "$DATA_DIR/$h" -d "$DATA_DIR" && rm "$DATA_DIR/$h"
 	done
+	# cleaning data
+	mkdir "data/data-rs-2023"
+	mv data/2023*.txt "data/data-rs-2023"
+	ls data/data-rs-*/*PROFIL*.txt &> /dev/null && rm data/data-rs-*/*PROFIL*.txt
+	cp data/data-rs-2024/2024_T4_NB_SURFACE.txt data/data-rs-2024/2024_T4_NB_SURFACE.txt.old
+	cat data/data-rs-2024/2024_T4_NB_SURFACE.txt.old | cut -f1,5- > data/data-rs-2024/2024_T4_NB_SURFACE.txt
+	rm data/data-rs-2024/2024_T4_NB_SURFACE.txt.old 
+	cp data/data-rs-2022/2022_T4_NB_SURFACE.txt data/data-rs-2022/2022_T4_NB_SURFACE.txt.old
+	cat data/data-rs-2022/2022_T4_NB_SURFACE.txt.old | tr ";" "\t" > data/data-rs-2022/2022_T4_NB_SURFACE.txt
+	rm data/data-rs-2022/2022_T4_NB_SURFACE.txt.old 
+	cp data/data-rs-2022/2022_T3_NB_SURFACE.txt data/data-rs-2022/2022_T3_NB_SURFACE.txt.old
+	cat data/data-rs-2022/2022_T3_NB_SURFACE.txt.old | tr ";" "\t" > data/data-rs-2022/2022_T3_NB_SURFACE.txt
+	rm data/data-rs-2022/2022_T3_NB_SURFACE.txt.old 
+	cp data/data-rs-2024/2024_T4_NB_SURFACE.txt data/data-rs-2024/2024_T4_NB_SURFACE.txt.old
+	awk '{ sub("\/24", "/2024"); print}' data/data-rs-2024/2024_T4_NB_SURFACE.txt.old > data/data-rs-2024/2024_T4_NB_SURFACE.txt
+	rm data/data-rs-2024/2024_T4_NB_SURFACE.txt.old 
 }
 
 get_weather_data_unit() {
@@ -42,7 +78,7 @@ get_weather_data_unit() {
 
 get_weather_data() {
 	id_station_luxembourg="75106001"
-	for i in $(seq 2015 2024); do
+	for i in $(seq 2016 2024); do
 		get_weather_data_unit $1 $i
 	done
 
@@ -51,7 +87,6 @@ get_weather_data() {
 main() {
 	ls $DATA_DIR &> /dev/null || mkdir $DATA_DIR
 	get_weather_data ${1?"Please provide the Météo France API key as first argument to this script."} || exit
-	exit
 	get_rs_data
 }
 

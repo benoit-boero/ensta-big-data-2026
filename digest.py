@@ -19,7 +19,7 @@ def ingest_data():
         .getOrCreate()
 
     rs_path_list = [
-        make_rs_data_path(i) for i in range(2015, 2025)
+        make_rs_data_path(i) for i in range(2016, 2025)
     ]
 
     # Ingestion des donées de surface du réseau:
@@ -34,7 +34,7 @@ def ingest_data():
         )
 
     weather_path_list = [
-        make_weather_data_path(i) for i in range(2015, 2025)
+        make_weather_data_path(i) for i in range(2016, 2025)
     ]
 
     # Ingestion des données météo
