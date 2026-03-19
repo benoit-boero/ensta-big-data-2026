@@ -65,8 +65,9 @@ get_rs_data() {
 get_weather_data_unit() {
 	local API_KEY=$1
 	local YEAR=$2
+	local STATION=$3
 	CMD_ID=$(echo $(curl -X 'GET' \
-	  'https://public-api.meteofrance.fr/public/DPClim/v1/commande-station/quotidienne?id-station=75106001&date-deb-periode='$YEAR'-01-01T00%3A00%3A00Z&date-fin-periode='$YEAR'-12-31T23%3A59%3A59Z' \
+	  'https://public-api.meteofrance.fr/public/DPClim/v1/commande-station/quotidienne?id-station='$STATION'&date-deb-periode='$YEAR'-01-01T00%3A00%3A00Z&date-fin-periode='$YEAR'-12-31T23%3A59%3A59Z' \
 	  -H 'accept: */*' \
 	  -H 'Authorization: Bearer '$API_KEY) | jq '.["elaboreProduitAvecDemandeResponse"]["return"]' | tr -d '"')
 	sleep 2
@@ -77,9 +78,9 @@ get_weather_data_unit() {
 }
 
 get_weather_data() {
-	id_station_luxembourg="75106001"
+	id_station_luxembourg=75106001
 	for i in $(seq 2016 2024); do
-		get_weather_data_unit $1 $i
+		get_weather_data_unit $1 $i $id_station_luxembourg
 	done
 
 }
