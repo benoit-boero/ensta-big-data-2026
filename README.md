@@ -178,7 +178,7 @@ pip install pyspark numpy
 
 ## Récupération des données
 
-Se munir d'une clef API météo france (il faut créer un compte sur le site).
+Se munir d'une clef API météo france (il faut créer un compte sur le site https://portail-api.meteofrance.fr/web/).
 ```bash
 bash get_data.sh $API_KEY
 ```
