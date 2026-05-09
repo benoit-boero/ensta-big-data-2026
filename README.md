@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Impact de la météo sur les validations des transports en Île-de-France
 
 ## Contexte
