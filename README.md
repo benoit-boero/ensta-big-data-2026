@@ -181,6 +181,7 @@ pip install pyspark numpy
 Se munir d'une clef API météo france (il faut créer un compte sur le site).
 ```bash
 bash get_data.sh $API_KEY
+```
 ---
 
 ## Digestion des données
