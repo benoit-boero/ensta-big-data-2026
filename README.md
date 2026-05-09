@@ -1,24 +1,27 @@
 # Impact de la météo sur les validations des transports en Île-de-France
 
 ## Contexte
-
-Ce projet analyse l’impact des conditions météorologiques sur la fréquentation des transports publics en Île-de-France à partir de données massives de validations et de données météo.
-
-Les objectifs principaux sont :
-
-- comparer la fréquentation entre semaine et week-end ;
-- mesurer l’impact de la pluie sur les validations ;
-- analyser l’impact de la météo selon le type de titre de transport ;
-- identifier les lignes les plus fréquentées au fil des années.
-
+ 
+Île-de-France Mobilités (IDFM) coordonne l'ensemble du réseau de transport francilien : 85 opérateurs, 1 900 lignes, 40 000 arrêts. Chaque passage en validation est enregistré, ce qui produit une volumétrie de données considérable sur plusieurs années.
+ 
+On s'est posé deux questions concrètes :
+ 
+- Comment évolue la fréquentation du réseau de surface (bus, tramway) selon le jour de la semaine, la ligne, et l'année ?
+- Est-ce que la pluie a un effet mesurable sur le nombre de validations quotidiennes ?
+L'idée derrière la deuxième question est simple : par temps de pluie, les gens qui hésitent entre marcher ou prendre le bus vont davantage valider. On voulait vérifier si ça se voit dans les données à l'échelle de toute l'Île-de-France sur 9 ans.
+ 
 ---
 
 # Dataset
 
-## Données de validations
-
-### Source
-Open Data Île-de-France Mobilités.
+## Validations réseau de surface — IDFM
+ 
+- **Source** : https://data.iledefrance.fr/explore/dataset/histo-validations-reseau-surface/
+- **Format** : fichiers texte séparés par tabulations (TSV), un fichier par trimestre par année, distribués en archives ZIP
+- **Couverture** : 2016 à 2024 inclus
+- **Colonnes principales** : `jour` (date), `CODE_STIF_LINE` (identifiant ligne), `ID_TITRE` (type de titre), `NB_VALD` (nombre de validations)
+- **Taille** : 2Go
+- **Point d'attention** : le format n'est pas homogène d'une année à l'autre. Certains fichiers utilisent `;` comme séparateur, d'autres des tabulations. Certains trimestres ont des colonnes supplémentaires. Les formats de date varient. Tout ça est corrigé dans `getdata.sh` avant d'attaquer Spark.
 
 ### Format
 Parquet.
@@ -166,55 +169,34 @@ Les analyses montrent que :
 ---
 
 ## Installation
-=======
-# Analyse de la fréquentation des transports en commun en Île-de-France
- 
-Wiam Benrguibi & Benoit Boero  — ENSTA Paris, Big Data 2025-2026
- 
----
- 
-## Contexte
- 
-Île-de-France Mobilités (IDFM) coordonne l'ensemble du réseau de transport francilien : 85 opérateurs, 1 900 lignes, 40 000 arrêts. Chaque passage en validation est enregistré, ce qui produit une volumétrie de données considérable sur plusieurs années.
- 
-On s'est posé deux questions concrètes :
- 
-- Comment évolue la fréquentation du réseau de surface (bus, tramway) selon le jour de la semaine, la ligne, et l'année ?
-- Est-ce que la pluie a un effet mesurable sur le nombre de validations quotidiennes ?
-L'idée derrière la deuxième question est simple : par temps de pluie, les gens qui hésitent entre marcher ou prendre le bus vont davantage valider. On voulait vérifier si ça se voit dans les données à l'échelle de toute l'Île-de-France sur 9 ans.
- 
-## Dataset
- 
-### Validations réseau de surface — IDFM
- 
-- **Source** : https://data.iledefrance.fr/explore/dataset/histo-validations-reseau-surface/
-- **Format** : fichiers texte séparés par tabulations (TSV), un fichier par trimestre par année, distribués en archives ZIP
-- **Couverture** : 2016 à 2024 inclus
-- **Colonnes principales** : `jour` (date), `CODE_STIF_LINE` (identifiant ligne), `ID_TITRE` (type de titre), `NB_VALD` (nombre de validations)
-- **Taille** : 2Go
-- **Point d'attention** : le format n'est pas homogène d'une année à l'autre. Certains fichiers utilisent `;` comme séparateur, d'autres des tabulations. Certains trimestres ont des colonnes supplémentaires. Les formats de date varient. Tout ça est corrigé dans `getdata.sh` avant d'attaquer Spark.
 
-## Prerequisites
-
-```bash
+```
 pip install pyspark numpy
 ```
 
 ---
-=======
-## Instruction to get the data
+
+## Récupération des données
+
+Se munir d'une clef API météo france (il faut créer un compte sur le site).
+```bash
+bash get_data.sh $API_KEY
+---
+
+## Digestion des données
+```bash
+python digest.py
+```
 
 
 ## Lancement
 
 ```bash
-python main.py
+python process.py
 ```
 
 
-Menu disponible :
-=======
-## Instruction to digest the data
+### Menu disponible :
 
 ```text
 1) Compare week days and weekends
@@ -226,8 +208,6 @@ q) exit
 
 
 ---
-=======
-## Instruction to analyse the data
 
 
 # Structure du projet
