@@ -191,21 +191,19 @@ L'idée derrière la deuxième question est simple : par temps de pluie, les gen
 - **Format** : fichiers texte séparés par tabulations (TSV), un fichier par trimestre par année, distribués en archives ZIP
 - **Couverture** : 2016 à 2024 inclus
 - **Colonnes principales** : `jour` (date), `CODE_STIF_LINE` (identifiant ligne), `ID_TITRE` (type de titre), `NB_VALD` (nombre de validations)
-- **Taille** : --
+- **Taille** : 2Go
 - **Point d'attention** : le format n'est pas homogène d'une année à l'autre. Certains fichiers utilisent `;` comme séparateur, d'autres des tabulations. Certains trimestres ont des colonnes supplémentaires. Les formats de date varient. Tout ça est corrigé dans `getdata.sh` avant d'attaquer Spark.
 
 ## Prerequisites
->>>>>>> a932272c567fc2735ceac3d53ea53d5ce571bf8b
 
 ```bash
 pip install pyspark numpy
 ```
 
-<<<<<<< HEAD
 ---
 =======
 ## Instruction to get the data
->>>>>>> a932272c567fc2735ceac3d53ea53d5ce571bf8b
+
 
 ## Lancement
 
@@ -213,11 +211,10 @@ pip install pyspark numpy
 python main.py
 ```
 
-<<<<<<< HEAD
+
 Menu disponible :
 =======
 ## Instruction to digest the data
->>>>>>> a932272c567fc2735ceac3d53ea53d5ce571bf8b
 
 ```text
 1) Compare week days and weekends
@@ -227,11 +224,11 @@ Menu disponible :
 q) exit
 ```
 
-<<<<<<< HEAD
+
 ---
 =======
 ## Instruction to analyse the data
->>>>>>> a932272c567fc2735ceac3d53ea53d5ce571bf8b
+
 
 # Structure du projet
 
